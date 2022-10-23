@@ -1,10 +1,9 @@
 import { api } from "../../services/api";
 import Swal from "sweetalert2";
-import { listToError } from "../../utils/string";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { SignUpBackGround, SingUpPanel } from "./styled";
+import { SignInBackGround, SingInPanel } from "./styled";
 import Link from "next/link";
 import jwt_decode from "jwt-decode";
 import background from '../../public/background.jpg'
@@ -12,7 +11,7 @@ import { useRouter } from "next/router";
 
 
 
-function signUp() {
+function SignIn() {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter()
 
@@ -46,7 +45,9 @@ function signUp() {
 
                 if (!decoded.verified) {
                     router.push("confirm_account/")
+                    return
                 }
+                router.push("/")
             } catch (err: any) {
                 console.log(err)
 
@@ -62,10 +63,10 @@ function signUp() {
     });
 
     return (
-        <SignUpBackGround style={{ backgroundImage: `url(${background.src})` }}>
-            <SingUpPanel>
+        <SignInBackGround style={{ backgroundImage: `url(${background.src})` }}>
+            <SingInPanel>
                 <div className="right-side content-box">
-                    <h2>Get's started.</h2>
+                    <h2>Acess the app</h2>
                     <p>
                         Dont have an account yet?{" "}
                         <b style={{ color: "#ff725e" }}>
@@ -110,9 +111,9 @@ function signUp() {
                         </button>
                     </form>
                 </div>
-            </SingUpPanel>
-        </SignUpBackGround>
+            </SingInPanel>
+        </SignInBackGround>
     );
 }
 
-export default signUp;
+export default SignIn;

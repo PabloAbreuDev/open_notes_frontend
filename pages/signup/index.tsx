@@ -1,5 +1,5 @@
-import { api } from "../../services/api";
 import { SignUpBackGround, SingUpPanel } from "./styled";
+import { api } from "../../services/api";
 import Swal from "sweetalert2";
 import { listToError } from "../../utils/string";
 import * as yup from "yup";
@@ -8,7 +8,7 @@ import { useState } from "react";
 import background from '../../public/background.jpg'
 import Link from "next/link";
 
-function signUp() {
+function SignUp() {
     const [loading, setLoading] = useState<boolean>(false)
 
     const formik = useFormik({
@@ -46,6 +46,7 @@ function signUp() {
                     email: values.email,
                     password: values.password,
                 });
+
 
             } catch (err: any) {
                 Swal.fire({
@@ -156,4 +157,4 @@ function signUp() {
     );
 }
 
-export default signUp;
+export default SignUp;

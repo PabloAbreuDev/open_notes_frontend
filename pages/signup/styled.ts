@@ -14,7 +14,7 @@ export const SingUpPanel = styled.div`
   color: #262626;
 
   .content-box {
-    width: 40vw;
+    width: 35vw;
     padding: 40px;
     border-radius: 8px;
     @media only screen and (max-width: 768px) {

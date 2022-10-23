@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SignUpBackGround = styled.div`
+export const SignInBackGround = styled.div`
   background: #bfe7f6;
   width: 100%;
   height: 100vh;
@@ -9,13 +9,13 @@ export const SignUpBackGround = styled.div`
   justify-content: center;
 `;
 
-export const SingUpPanel = styled.div`
+export const SingInPanel = styled.div`
   display: flex;
   font-family: "Roboto", sans-serif;
   color: #262626;
 
   .content-box {
-    width: 40vw;
+    width: 30vw;
     padding: 40px;
     border-radius: 8px;
     @media only screen and (max-width: 768px) {
