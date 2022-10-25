@@ -31,17 +31,26 @@ export const ConfirmAccountPanel = styled.div`
       font-weight: bold;
     }
 
-    button {
-      padding: 13px 15px 13px 15px;
-      width: 100%;
-      border: solid 1px #d79086;
-      background-color: #ff725e;
-      color: #fff;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      &:hover {
-        background-color: #c15545;
+    .action-buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+
+      @media only screen and (max-width: 768px) {
+        flex-direction: column;
+      }
+      button {
+        padding: 13px 15px 13px 15px;
+        width: 100%;
+        border: solid 1px #d79086;
+        background-color: #ff725e;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 8px;
+        cursor: pointer;
+        &:hover {
+          background-color: #c15545;
+        }
       }
     }
   }

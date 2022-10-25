@@ -1,19 +1,25 @@
 import { api } from "../../services/api";
 import Swal from "sweetalert2";
 import * as yup from "yup";
-import { useFormik } from "formik";
-import { useState } from "react";
+import { useFormik, validateYupSchema } from "formik";
+import { useContext, useState } from "react";
 import { SignInBackGround, SingInPanel } from "./styled";
 import Link from "next/link";
 import jwt_decode from "jwt-decode";
 import background from '../../public/background.jpg'
 import { useRouter } from "next/router";
+import { AuthContext } from "../../context/AuthContext";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+import { getApiClient } from "../../services/axios";
 
 
 
 function SignIn() {
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter()
+
+    const { signIn } = useContext(AuthContext)
 
 
     const formik = useFormik({
@@ -34,23 +40,12 @@ function SignIn() {
         }),
         async onSubmit(values, formikHelpers) {
             setLoading(true);
+
             try {
+                await signIn({ email: values.email, password: values.password })
 
-                const { data } = await api.put<{ token: string }>("/users/login", {
-                    email: values.email,
-                    password: values.password,
-                });
-
-                const decoded: { id: string, verified: boolean } = jwt_decode(data.token)
-
-                if (!decoded.verified) {
-                    router.push("confirm_account/")
-                    return
-                }
-                router.push("/")
             } catch (err: any) {
                 console.log(err)
-
                 Swal.fire({
                     icon: "warning",
                     title: "Something went wrong",
@@ -114,6 +109,22 @@ function SignIn() {
             </SingInPanel>
         </SignInBackGround>
     );
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const apiClient = getApiClient(ctx)
+    const { '@opennotes:token': token } = parseCookies(ctx,)
+    if (token) {
+        return {
+            redirect: {
+                destination: '/home',
+                permanent: true
+            }
+        }
+    }
+    return {
+        props: {}
+    }
 }
 
 export default SignIn;
