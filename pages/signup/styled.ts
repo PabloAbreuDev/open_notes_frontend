@@ -6,6 +6,7 @@ export const SignUpBackGround = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #00a3e2;
 `;
 
 export const SingUpPanel = styled.div`

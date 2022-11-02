@@ -61,7 +61,7 @@ function SignUp() {
     });
 
     return (
-        <SignUpBackGround style={{ backgroundImage: `url(${background.src})` }}>
+        <SignUpBackGround >
             <SingUpPanel>
 
                 <div className="right-side content-box">

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import jwtDecode from "jwt-decode";
 import { parseCookies, destroyCookie } from "nookies";
 
 export function getApiClient(ctx?: any) {
@@ -20,6 +21,8 @@ export function getApiClient(ctx?: any) {
         destroyCookie(ctx, "@opennotes:token");
         window.location.href = "/signin";
       }
+
+      return Promise.reject(error);
     }
   );
 

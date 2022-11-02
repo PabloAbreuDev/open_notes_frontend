@@ -36,6 +36,8 @@ export function AuthProvider({ children }: any) {
             if (token) {
                 const { data } = await api.get<User>(`/users/me`)
                 setUser(data)
+                console.log(data)
+
             }
         }
         getUserInfo()

@@ -7,6 +7,7 @@ export const SignInBackGround = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #00a3e2;
 `;
 
 export const SingInPanel = styled.div`

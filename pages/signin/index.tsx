@@ -58,7 +58,7 @@ function SignIn() {
     });
 
     return (
-        <SignInBackGround style={{ backgroundImage: `url(${background.src})` }}>
+        <SignInBackGround>
             <SingInPanel>
                 <div className="right-side content-box">
                     <h2>Acess the app</h2>

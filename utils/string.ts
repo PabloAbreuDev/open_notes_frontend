@@ -10,7 +10,10 @@ export const listToError = (errorList: any[]) => {
   return texto;
 };
 
-export const protectEmail = (mail: string) => {
+export const protectEmail = (mail: string | undefined) => {
+  if (!mail) {
+    return "***********";
+  }
   var [name, domain] = mail.split("@");
   var blockedName = `${name[0]}${"*".repeat(name.length - 2)}${
     name[name.length - 1]
