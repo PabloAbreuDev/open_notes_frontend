@@ -1,11 +1,9 @@
 import { useContext, useState } from "react";
-import background from '../../public/background.jpg'
 import { useRouter } from "next/router";
 import { ConfirmAccountBackGround, ConfirmAccountPanel } from "./styled";
 import { protectEmail } from "../../utils/string";
 import { AuthContext } from "../../context/AuthContext";
 import { api } from "../../services/api";
-import { getLogger } from "nodemailer/lib/shared";
 import Swal from "sweetalert2";
 
 
