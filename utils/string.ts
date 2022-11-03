@@ -1,3 +1,5 @@
+import { number } from "yup";
+
 export const listToError = (errorList: any[]) => {
   let texto = "";
 
@@ -20,3 +22,7 @@ export const protectEmail = (mail: string | undefined) => {
   }`;
   return `${blockedName}@${domain}`;
 };
+
+export function abbreviation(text: string, chars: number): string {
+  return text.length <= chars ? text : text.substring(0, chars) + "...";
+}
