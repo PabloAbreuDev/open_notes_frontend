@@ -19,7 +19,7 @@ function CardPreview({ card, tags }: { card: ICardInfo, tags: ITagInfo[] }) {
     </CardPreviewStyled>;
 }
 
-function Tag(tag: ITagInfo) {
+export function Tag(tag: ITagInfo) {
     return <TagStyled key={tag.tagId} className="tag_pill">{abbreviation(tag.tagName, 15)}</TagStyled>
 }
 
