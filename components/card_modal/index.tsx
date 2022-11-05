@@ -2,7 +2,14 @@ import { ITagInfo } from "../../interface/card";
 import { Tag } from "../card_preview";
 import { CardModalStyled } from "./styled";
 import { AiFillDelete } from "react-icons/ai";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { NoteContext } from "../../context/NoteContext";
+
+
+
+
+
+
 
 type CardProps = {
     show: boolean;
@@ -12,46 +19,70 @@ type CardProps = {
 
 function CardModal({ props }: { props: CardProps }) {
 
+    const { currentNote, changeNote, loadCurrentNote, deleteNote } = useContext(NoteContext)
 
-    const myTitle = useRef<HTMLDivElement>(null);
-    const myContent = useRef<HTMLDivElement>(null);
+    const [title, setTile] = useState<string>("")
+    const [content, setContent] = useState<string>("")
+
+    const titleRef = useRef<HTMLTextAreaElement>(null);
+    const contentRef = useRef<HTMLTextAreaElement>(null);
+
+    const resizeTextArea = () => {
+        if (titleRef.current !== null) {
+            titleRef.current.style.height = "auto"
+            titleRef.current.style.height = titleRef.current.scrollHeight + "px";
+        }
+        if (contentRef.current !== null) {
+            contentRef.current.style.height = "auto"
+            contentRef.current.style.height = contentRef.current.scrollHeight + "px";
+        }
+    };
+
+    useEffect(resizeTextArea, [content, title]);
+
+
+    useEffect(() => {
+        setTile(currentNote?.title!)
+        setContent(currentNote?.content!)
+    }, [currentNote])
+
 
     if (!props.show) {
         return null;
     }
 
-    function onCloseModal() {
-        console.log({ title: myTitle.current?.innerHTML, content: myContent.current?.innerHTML })
+
+    async function onCloseModal() {
+        if (currentNote)
+            changeNote(currentNote?._id, title, content)
+        console.log(currentNote?._id)
+
+        loadCurrentNote({
+            _id: "",
+            title: "",
+            content: "",
+            tags: []
+        })
         props.onClose()
     }
-
-
 
 
     return (
         <CardModalStyled onMouseDown={onCloseModal}>
             <div className="card_modal_content" onMouseDown={(e) => e.stopPropagation()}>
-                <div className="card_modal_header" contentEditable={true} ref={myTitle}>
-                    <div className="card_modal_title">Título do card</div>
+                <div className="card_modal_header" >
+                    <textarea maxLength={100} ref={titleRef} value={title} rows={1} onChange={(e) => setTile(e.target.value)}></textarea>
                 </div>
                 <div className="card_modal_body" >
-                    <div className="card_modal_body_text" contentEditable={true} ref={myContent}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar dui a condimentum tempor. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Praesent ac elementum mauris. Etiam venenatis velit diam, vel aliquam magna sagittis ac. Donec condimentum arcu eget elit laoreet, quis vulputate tortor hendrerit. Suspendisse efficitur sem vitae convallis volutpat. Nullam sed dictum orci. Integer vestibulum, felis ac lobortis accumsan, sapien mauris molestie tortor, id blandit libero augue in ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas vestibulum vel est a dictum. Integer in metus sit amet nulla tincidunt commodo. Proin quis bibendum metus.
-
-                        Etiam placerat vulputate dui, eget aliquam nisi feugiat id. Etiam pulvinar mi gravida est tincidunt gravida. Aliquam ipsum mauris, dignissim sed nunc in, commodo accumsan tortor. Etiam ultricies dictum ex, sit amet tincidunt lectus rhoncus interdum. Suspendisse euismod dui ligula. Phasellus in erat vitae libero hendrerit convallis. Duis eget molestie orci. Integer eleifend tellus cursus volutpat tempus. Integer dignissim elementum urna.
-
-                        Pellentesque gravida ornare lorem, eu volutpat diam lobortis eu. Nam eu laoreet lectus. Nunc ultricies leo sed neque posuere eleifend. Nam vehicula nibh in nunc molestie ullamcorper. Integer ut porttitor lacus. Fusce et lacus ac sem iaculis gravida. Proin eleifend erat quam, in rhoncus dolor porttitor eget. Nunc eleifend ligula ac ipsum efficitur sollicitudin. Duis hendrerit elementum quam, id rutrum tellus fringilla vitae. Phasellus lobortis dui sit amet ante condimentum, ac finibus risus vulputate.
-
-                        Sed pharetra mollis aliquet. Ut ac justo fringilla, vulputate urna ut, finibus dolor. Nullam sed dictum mauris. Sed lacinia, libero at vehicula lobortis, nisl ex tempor leo, et bibendum dui ex et risus. Ut ac lorem consequat, tincidunt ex at, sollicitudin erat. Mauris varius nisl in pretium ullamcorper. Donec et neque ultricies, finibus nunc condimentum, pretium orci. Phasellus at pretium tortor, ac aliquam ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi mi ipsum, euismod quis pulvinar ac, faucibus vel quam. Nullam quis felis mauris.
-
-                        Sed pharetra mollis aliquet. Ut ac justo fringilla, vulputate urna ut, finibus dolor. Nullam sed dictum mauris. Sed lacinia, libero at vehicula lobortis, nisl ex tempor leo, et bibendum dui ex et risus. Ut ac lorem consequat, tincidunt ex at, sollicitudin erat. Mauris varius nisl in pretium ullamcorper. Donec et neque ultricies, finibus nunc condimentum, pretium orci. Phasellus at pretium tortor, ac aliquam ligula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi mi ipsum, euismod quis pulvinar ac, faucibus vel quam. Nullam quis felis mauris.
+                    <div className="card_modal_body_text" >
+                        <textarea ref={contentRef} value={content} rows={1} onChange={(e) => setContent(e.target.value)}></textarea>
                     </div>
 
                     <div className="tags" contentEditable={false}>
-                        {props.tags.map((item) => <div>{Tag(item)} </div>)}
+                        {currentNote?.tags.map((item) => <div>{Tag(item)} </div>)}
                     </div>
                 </div>
-                <div className="card_modal_footer">
+                <div className="card_modal_footer" onClick={() => { deleteNote(currentNote?._id!), props.onClose() }}>
                     <AiFillDelete />
                 </div>
             </div>

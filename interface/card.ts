@@ -1,10 +1,11 @@
 export interface ICardInfo {
-  cardId: string;
-  cardTitle: string;
-  cardContent: string;
+  _id: string;
+  title: string;
+  content: string;
+  tags: ITagInfo[];
 }
 
 export interface ITagInfo {
-  tagId: string;
-  tagName: string;
+  _id: string;
+  name: string;
 }

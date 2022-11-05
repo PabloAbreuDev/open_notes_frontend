@@ -23,6 +23,9 @@ export const protectEmail = (mail: string | undefined) => {
   return `${blockedName}@${domain}`;
 };
 
-export function abbreviation(text: string, chars: number): string {
+export function abbreviation(text: string, chars: number): string | undefined {
+  if (!text) {
+    return;
+  }
   return text.length <= chars ? text : text.substring(0, chars) + "...";
 }

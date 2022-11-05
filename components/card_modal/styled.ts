@@ -17,11 +17,24 @@ export const CardModalStyled = styled.div`
     border-radius: 8px;
     overflow-x: auto;
 
+    textarea {
+      width: 100%;
+      height: 100%;
+      border-color: Transparent;
+      outline: none;
+      resize: none;
+      overflow-y: hidden;
+    }
+
     .card_modal_header {
-      font-size: 1.4rem;
       font-weight: 400;
       padding: 10px;
       outline: none;
+      textarea {
+        font-family: "Roboto";
+        font-weight: 500;
+        font-size: 1.4rem;
+      }
     }
 
     .card_modal_body {
@@ -30,7 +43,14 @@ export const CardModalStyled = styled.div`
       overflow-wrap: break-word;
       overflow-x: hidden;
       overflow-y: auto;
-      padding: 0 15px 0 15px;
+      padding: 0 10px 0 10px;
+
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      textarea {
+        font-family: "Roboto";
+        font-size: 1rem;
+      }
 
       /* width */
       ::-webkit-scrollbar {
@@ -53,7 +73,6 @@ export const CardModalStyled = styled.div`
       }
 
       .card_modal_body_text {
-        padding-bottom: 20px;
         outline: none;
       }
       .tags {

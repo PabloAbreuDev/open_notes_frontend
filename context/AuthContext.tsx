@@ -4,7 +4,6 @@ import { setCookie, parseCookies, destroyCookie } from 'nookies'
 import Router from 'next/router'
 
 import jwtDecode from "jwt-decode";
-import { getIn } from "formik";
 
 type SignInData = {
     email: string, password: string
