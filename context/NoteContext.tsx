@@ -7,8 +7,10 @@ type NoteContextType = {
     notes: ICardInfo[];
     loadCurrentNote: (noteDate: ICardInfo) => void;
     loadNotes: () => void;
-    changeNote: (noteId: string, title: string, content: string) => void
-    deleteNote: (noteId: string) => void
+    changeNote: (noteId: string, title: string, content: string) => void;
+    deleteNote: (noteId: string) => void;
+    createNote: () => Promise<ICardInfo>;
+
 }
 
 export const NoteContext = createContext({} as NoteContextType)
@@ -44,9 +46,19 @@ export function NoteProvider({ children }: any) {
         setNotes((item) => item.filter((element) => element._id !== noteId))
     }
 
+    async function createNote(): Promise<ICardInfo> {
+        const { data } = await api.post<ICardInfo>("/notes", {
+            title: "Title",
+            content: "..."
+        })
+        setNotes([data, ...notes])
+        loadCurrentNote(data)
+        return data
+    }
 
 
-    return <NoteContext.Provider value={{ notes, currentNote, loadCurrentNote, loadNotes, changeNote, deleteNote }}>
+
+    return <NoteContext.Provider value={{ notes, currentNote, loadCurrentNote, loadNotes, changeNote, deleteNote, createNote }}>
         {children}
     </NoteContext.Provider>
 

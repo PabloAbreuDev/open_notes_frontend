@@ -3,13 +3,14 @@ import { parseCookies } from "nookies";
 import { useContext, useEffect, useState } from "react";
 import CardModal from "../../components/card_modal";
 import CardPreview from "../../components/card_preview";
+import NewNoteBox from "../../components/newnote_box";
 import { AuthContext } from "../../context/AuthContext";
 import { NoteContext } from "../../context/NoteContext";
 import { ICardInfo, ITagInfo } from "../../interface/card";
 
 export default function Home() {
     const { user, signOut } = useContext(AuthContext);
-    const { loadNotes, notes, currentNote, loadCurrentNote } = useContext(NoteContext);
+    const { loadNotes, notes, currentNote, loadCurrentNote, createNote } = useContext(NoteContext);
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -31,6 +32,17 @@ export default function Home() {
                 Home - {user?.firstName}{" "}
                 <button onClick={() => signOut()}>logout</button>
             </div>
+
+            <br />
+
+            <div onClick={async () => {
+                await createNote()
+                setShow(true)
+            }}>
+                <NewNoteBox />
+
+            </div>
+
 
             <br />
 

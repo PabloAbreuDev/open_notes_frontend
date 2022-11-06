@@ -79,7 +79,7 @@ function CardModal({ props }: { props: CardProps }) {
                     </div>
 
                     <div className="tags" contentEditable={false}>
-                        {currentNote?.tags.map((item) => <div>{Tag(item)} </div>)}
+                        {currentNote?.tags?.map((item) => <div>{Tag(item)} </div>)}
                     </div>
                 </div>
                 <div className="card_modal_footer" onClick={() => { deleteNote(currentNote?._id!), props.onClose() }}>
