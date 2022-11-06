@@ -41,9 +41,10 @@ export const CardPreviewStyled = styled.div`
 
   .footer {
     padding-top: 10px;
-    height: 10;
+    height: 10px;
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 10px;
     bottom: 0;
   }

@@ -92,6 +92,61 @@ export const CardModalStyled = styled.div`
       margin-top: 20px;
       height: 40px;
       padding: 10px;
+      gap: 20px;
+      font-size: 18px;
+      color: #333333;
+
+      .dropdown {
+        position: relative;
+      }
+
+      .menu {
+        position: absolute;
+
+        list-style-type: none;
+        margin: 5px 0;
+        padding: 0;
+
+        border: 1px solid grey;
+        width: 150px;
+      }
+
+      .menu > li {
+        margin: 0;
+
+        background-color: white;
+      }
+
+      .menu > li:hover {
+        background-color: lightgray;
+      }
+
+      .menu > li > button {
+        width: 100%;
+        height: 100%;
+        text-align: left;
+
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 5px;
+        margin: 0;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .icon {
+        display: flex;
+        padding: 5px;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          border-radius: 100%;
+          background-color: #999999;
+          transition: ease 0.4s all;
+          cursor: pointer;
+        }
+      }
     }
   }
 `;

@@ -10,12 +10,13 @@ import { ICardInfo, ITagInfo } from "../../interface/card";
 
 export default function Home() {
     const { user, signOut } = useContext(AuthContext);
-    const { loadNotes, notes, currentNote, loadCurrentNote, createNote } = useContext(NoteContext);
+    const { loadNotes, loadTags, notes, currentNote, loadCurrentNote, createNote } = useContext(NoteContext);
     const [show, setShow] = useState(false);
 
     useEffect(() => {
         function loadPageDate() {
             loadNotes()
+            loadTags()
         }
         loadPageDate()
     }, [])

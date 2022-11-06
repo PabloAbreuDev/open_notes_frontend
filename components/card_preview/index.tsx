@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ICardInfo, ITagInfo } from "../../interface/card";
@@ -17,13 +16,12 @@ function CardPreview({ card, tags }: { card: ICardInfo, tags: ITagInfo[] }) {
             <div className="title"><pre>{abbreviation(card.title, 20)}</pre></div>
         </div>
         <div className="body">
-            {/* <div className="content"><pre>{abbreviation(card.content, 230)}</pre></div> */}
-
-            <ReactMarkdown children={card.content} remarkPlugins={[remarkGfm]} />,
+            <ReactMarkdown children={card.content} remarkPlugins={[remarkGfm]} />
         </div>
         <div className="footer">
             {tags.map((item) => Tag(item))}
         </div>
+
     </CardPreviewStyled>;
 }
 
