@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, SetStateAction, useState } from "react";
 import { ICardInfo, ITagInfo } from "../interface/card";
 import { api } from "../services/api";
 
@@ -11,8 +11,9 @@ type NoteContextType = {
     changeNote: (noteId: string, title: string, content: string) => void;
     deleteNote: (noteId: string) => void;
     createNote: () => Promise<ICardInfo>;
-    loadTags: () => Promise<void>
-    addTagToNote: (idNote: string, idTag: string) => Promise<void>
+    loadTags: () => Promise<void>;
+    addTagToNote: (idNote: string, idTag: string) => Promise<void>;
+    removeTagFromNote: (idNote: string, idTag: string) => Promise<void>;
 
 }
 
@@ -89,9 +90,24 @@ export function NoteProvider({ children }: any) {
         setNotes(newState);
     }
 
+    async function removeTagFromNote(idNote: string, idTag: string): Promise<void> {
+        const { data } = await api.delete(`/notes/${idNote}/tag/${idTag}`)
+        const newState: ICardInfo[] = []
+        notes.map((item) => {
+            if (item._id === idNote) {
+                const newTags = item.tags.filter(item => item._id !== idTag)
+                newState.push({ ...item, tags: newTags })
+                setCurrentNote({ ...currentNote!, tags: newTags })
+            } else {
+                newState.push(item)
+            }
+        })
+        setNotes(newState);
+    }
 
 
-    return <NoteContext.Provider value={{ notes, tags, currentNote, loadCurrentNote, loadNotes, changeNote, deleteNote, createNote, loadTags, addTagToNote }}>
+
+    return <NoteContext.Provider value={{ notes, tags, currentNote, loadCurrentNote, loadNotes, changeNote, deleteNote, createNote, loadTags, addTagToNote, removeTagFromNote }}>
         {children}
     </NoteContext.Provider>
 

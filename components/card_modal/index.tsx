@@ -19,7 +19,7 @@ type CardProps = {
 };
 
 function CardModal({ props }: { props: CardProps }) {
-    const { currentNote, changeNote, loadCurrentNote, deleteNote, tags, addTagToNote } =
+    const { currentNote, changeNote, loadCurrentNote, deleteNote, tags, addTagToNote, removeTagFromNote } =
         useContext(NoteContext);
 
     const [tagActions, setTagActions] = useState<SubMenuOptions[]>([])
@@ -112,7 +112,7 @@ function CardModal({ props }: { props: CardProps }) {
 
                     <div className="tags" contentEditable={false}>
                         {currentNote?.tags?.map((item) => (
-                            <div>{Tag(item)} </div>
+                            <div>{Tag(item)}  <div className="remove_tag" onClick={() => removeTagFromNote(currentNote._id, item._id)}>x</div></div>
                         ))}
                     </div>
                 </div>
