@@ -6,24 +6,23 @@ import CardPreview from "../../components/card_preview";
 import NewNoteBox from "../../components/newnote_box";
 import SideMenu from "../../components/side_menu";
 import { AuthContext } from "../../context/AuthContext";
+import { NoteBookContext } from "../../context/NoteBookContext";
 import { NoteContext } from "../../context/NoteContext";
-import { ICardInfo, ITagInfo } from "../../interface/card";
 
 export default function Home() {
     const { user, signOut } = useContext(AuthContext);
-    const { loadNotes, loadTags, loadNoteBooks, notes, currentNote, loadCurrentNote, createNote } = useContext(NoteContext);
+    const { loadNotes, loadTags, notes, currentNote, loadCurrentNote, createNote, tags } = useContext(NoteContext);
+    const { loadNoteBooks, currentNotebook } = useContext(NoteBookContext)
     const [show, setShow] = useState(false);
 
     useEffect(() => {
         function loadPageDate() {
-            loadNotes()
             loadTags()
             loadNoteBooks()
+            loadNotes("", "")
         }
         loadPageDate()
     }, [])
-
-
 
 
 
@@ -40,14 +39,16 @@ export default function Home() {
 
             <SideMenu />
 
+            <hr />
+
             <div onClick={async () => {
-                await createNote()
+                await createNote(currentNotebook?._id)
                 setShow(true)
             }}>
                 <NewNoteBox />
-
             </div>
 
+            <hr />
 
             <br />
 

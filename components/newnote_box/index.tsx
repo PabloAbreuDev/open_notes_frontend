@@ -5,9 +5,9 @@ function NewNoteBox() {
 
 
     return <NewNoteBoxStyled>
-        <div>
+        <button>
             Create a note...
-        </div>
+        </button>
     </NewNoteBoxStyled>
 }
 

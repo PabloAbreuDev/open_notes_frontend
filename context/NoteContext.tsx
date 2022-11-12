@@ -1,4 +1,4 @@
-import { createContext, SetStateAction, useState } from "react";
+import { createContext, SetStateAction, useContext, useState } from "react";
 import { ICardInfo, INotebook, ITagInfo } from "../interface/card";
 import { api } from "../services/api";
 
@@ -6,19 +6,19 @@ type NoteContextType = {
     currentNote: ICardInfo | null;
     notes: ICardInfo[];
     tags: ITagInfo[];
-    noteBooks: INotebook[];
     loadCurrentNote: (noteDate: ICardInfo) => void;
-    loadNotes: () => void;
+    loadNotes: (tagId?: string, noteBookId?: string) => void;
     changeNote: (noteId: string, title: string, content: string) => void;
     deleteNote: (noteId: string) => void;
-    createNote: () => Promise<ICardInfo>;
+    createNote: (noteBookId?: string | undefined) => Promise<ICardInfo>;
     loadTags: () => Promise<void>;
     addTagToNote: (idNote: string, idTag: string) => Promise<void>;
     removeTagFromNote: (idNote: string, idTag: string) => Promise<void>;
     addTag: (title: string) => Promise<void>;
     deleteTag: (idTag: string) => Promise<void>;
-    createNoteBook: (title: string) => Promise<void>;
-    loadNoteBooks: () => Promise<void>;
+    setCurrentNote: (item: ICardInfo) => void;
+    editTag: (name: string, tagId: string) => Promise<void>;
+    findNotesByText: (text: string) => Promise<void>;
 };
 
 export const NoteContext = createContext({} as NoteContextType);
@@ -27,14 +27,15 @@ export function NoteProvider({ children }: any) {
     const [notes, setNotes] = useState<ICardInfo[]>([]);
     const [tags, setTags] = useState<ITagInfo[]>([]);
     const [currentNote, setCurrentNote] = useState<ICardInfo | null>(null);
-    const [noteBooks, setNoteBook] = useState<INotebook[]>([]);
 
     async function loadCurrentNote(noteDate: ICardInfo) {
         setCurrentNote(noteDate);
     }
 
-    async function loadNotes() {
-        const { data } = await api.get<ICardInfo[]>("/notes");
+    async function loadNotes(tagId?: string, noteBookId?: string) {
+        const { data } = await api.get<ICardInfo[]>(
+            `/notes?tagId=${tagId}&noteBookId=${noteBookId}`
+        );
         setNotes(data);
     }
 
@@ -55,10 +56,14 @@ export function NoteProvider({ children }: any) {
         setNotes((item) => item.filter((element) => element._id !== noteId));
     }
 
-    async function createNote(): Promise<ICardInfo> {
+    async function createNote(
+        noteBookId: string | undefined
+    ): Promise<ICardInfo> {
+        console.log(noteBookId);
         const { data } = await api.post<ICardInfo>("/notes", {
             title: "Title",
             content: "...",
+            notebookId: noteBookId,
         });
         setNotes([data, ...notes]);
         loadCurrentNote(data);
@@ -70,12 +75,6 @@ export function NoteProvider({ children }: any) {
         setTags(data);
     }
 
-    async function loadNoteBooks(): Promise<void> {
-        const { data } = await api.get<INotebook[]>("/notebooks");
-        setNoteBook(data);
-        return;
-    }
-
     async function addTagToNote(idNote: string, idTag: string) {
         const { data } = await api.put(`/notes/${idNote}/tag`, {
             tagId: idTag,
@@ -85,17 +84,14 @@ export function NoteProvider({ children }: any) {
                 let tag_existe = obj.tags.find((item) => item._id === idTag);
 
                 if (!tag_existe) {
-                    console.log(currentNote);
                     const newTagCurrentNoteList = [...currentNote?.tags!, data];
                     const newNoteTags = [...obj.tags, data];
                     setCurrentNote({ ...currentNote!, tags: newTagCurrentNoteList });
                     return { ...obj, tags: newNoteTags };
                 }
             }
-
             return obj;
         });
-
         setNotes(newState);
     }
 
@@ -136,9 +132,33 @@ export function NoteProvider({ children }: any) {
         return;
     }
 
-    async function createNoteBook() {
-        const { data } = await api.post<INotebook>("/notebooks");
-        setNoteBook([...noteBooks, data]);
+    async function editTag(name: string, tagId: string) {
+        await api.put(`/users/tag/${tagId}`, {
+            name,
+        });
+        const newTagState = tags.map((obj) => {
+            if (obj._id === tagId) {
+                return { ...obj, name };
+            }
+            return obj;
+        });
+
+        notes.forEach((item) => {
+            const indice = item.tags.findIndex((obj) => obj._id === tagId);
+            if (indice !== -1) {
+                item.tags[indice].name = name;
+            }
+        });
+
+        setTags(newTagState);
+        return;
+    }
+
+    async function findNotesByText(text: string) {
+        const { data } = await api.put<ICardInfo[]>("/notebooks/search", {
+            text,
+        });
+        setNotes(data);
         return;
     }
 
@@ -148,7 +168,6 @@ export function NoteProvider({ children }: any) {
                 notes,
                 tags,
                 currentNote,
-                noteBooks,
                 loadCurrentNote,
                 loadNotes,
                 changeNote,
@@ -159,8 +178,9 @@ export function NoteProvider({ children }: any) {
                 removeTagFromNote,
                 addTag,
                 deleteTag,
-                createNoteBook,
-                loadNoteBooks,
+                setCurrentNote,
+                editTag,
+                findNotesByText,
             }}
         >
             {children}
