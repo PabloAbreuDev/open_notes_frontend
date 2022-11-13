@@ -19,6 +19,9 @@ export default function SideMenu() {
     return (
         <>
             <h3>Notebooks</h3>
+
+            <button onClick={() => findNotesByText("shi")}>ok</button>
+
             {noteBooks.map((item) => (
                 <div>
                     {currentNotebook?._id === item._id ? "XXXX" : ""}
