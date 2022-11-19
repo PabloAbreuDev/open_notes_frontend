@@ -10,6 +10,8 @@ import {
 import { useContext, useEffect, useRef, useState } from "react";
 import { NoteContext } from "../../context/NoteContext";
 import SubMenu, { SubMenuOptions } from "../sub_menu";
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
 
 type CardProps = {
     show: boolean;
@@ -25,13 +27,13 @@ function CardModal({ props }: { props: CardProps }) {
         deleteNote,
         tags,
         addTagToNote,
-        removeTagFromNote, setCurrentNote
+        removeTagFromNote,
+        setCurrentNote,
     } = useContext(NoteContext);
 
     const [tagActions, setTagActions] = useState<SubMenuOptions[]>([]);
 
     const [tagOptionsOpen, setTagOptionsOpen] = useState<boolean>(false);
-
 
     const [title, setTile] = useState<string>("");
     const [content, setContent] = useState<string>("");
@@ -39,6 +41,7 @@ function CardModal({ props }: { props: CardProps }) {
     const titleRef = useRef<HTMLTextAreaElement>(null);
     const contentRef = useRef<HTMLTextAreaElement>(null);
 
+    const [markdownOn, setMarkdownOn] = useState<boolean>(false)
 
     const resizeTextArea = () => {
         if (titleRef.current !== null) {
@@ -87,6 +90,10 @@ function CardModal({ props }: { props: CardProps }) {
         props.onClose();
     }
 
+    async function toggleMarkdown() {
+        setMarkdownOn(!markdownOn)
+    }
+
     const options = [
         { option: "Opção A", action: () => console.log("Hello World") },
         { option: "opção B", action: () => console.log("Hello World") },
@@ -101,29 +108,54 @@ function CardModal({ props }: { props: CardProps }) {
                 }}
             >
                 <div className="card_modal_header">
-                    { }
                     <textarea
                         maxLength={100}
                         ref={titleRef}
                         value={currentNote?.title}
                         rows={1}
-                        onChange={(e) => setCurrentNote({ _id: currentNote?._id || "", tags: currentNote?.tags || [], content: currentNote?.content || "", title: e.target.value })}
+                        onChange={(e) =>
+                            setCurrentNote({
+                                _id: currentNote?._id || "",
+                                tags: currentNote?.tags || [],
+                                content: currentNote?.content || "",
+                                title: e.target.value,
+                            })
+                        }
                     ></textarea>
                 </div>
                 <div className="card_modal_body">
                     <div className="card_modal_body_text">
-                        <textarea
-                            ref={contentRef}
-                            value={currentNote?.content}
-                            rows={1}
-                            onChange={(e) => setCurrentNote({ _id: currentNote?._id || "", tags: currentNote?.tags || [], content: e.target.value, title: currentNote?.title || "" })}
-                        ></textarea>
+                        {
+                            markdownOn ?
+                                <div className="markdown">
+                                    <ReactMarkdown children={currentNote?.content || ""} remarkPlugins={[remarkGfm]} />
+                                </div>
+                                :
+                                <textarea
+                                    ref={contentRef}
+                                    value={currentNote?.content}
+                                    rows={1}
+                                    onChange={(e) =>
+                                        setCurrentNote({
+                                            _id: currentNote?._id || "",
+                                            tags: currentNote?.tags || [],
+                                            content: e.target.value,
+                                            title: currentNote?.title || "",
+                                        })
+                                    }
+                                ></textarea>
+                        }
+
+
+
+
+
                     </div>
 
                     <div className="tags" contentEditable={false}>
                         {currentNote?.tags?.map((item) => (
-                            <div>
-                                {Tag(item)}{" "}
+                            <div className="tag_space">
+                                {Tag(item)}
                                 <div
                                     className="remove_tag"
                                     onClick={() => removeTagFromNote(currentNote._id, item._id)}
@@ -136,7 +168,7 @@ function CardModal({ props }: { props: CardProps }) {
                 </div>
                 <div className="card_modal_footer">
                     <div className="icon">
-                        <BsFillMarkdownFill />
+                        <BsFillMarkdownFill onClick={() => toggleMarkdown()} />
                     </div>
                     <div className="icon">
                         <BsPaletteFill />
@@ -164,7 +196,7 @@ function CardModal({ props }: { props: CardProps }) {
                     </div>
                 </div>
             </div>
-        </CardModalStyled >
+        </CardModalStyled>
     );
 }
 

@@ -17,6 +17,8 @@ export const CardModalStyled = styled.div`
     border-radius: 8px;
     overflow-x: auto;
 
+    color: #000;
+
     textarea {
       width: 100%;
       height: 100%;
@@ -80,6 +82,29 @@ export const CardModalStyled = styled.div`
         gap: 15px;
         justify-content: flex-end;
         user-select: none;
+        color: #000;
+
+        .tag_space {
+          cursor: pointer;
+          display: flex;
+
+          .remove_tag {
+            opacity: 0;
+            transition: ease 0.1s all;
+          }
+
+          &:hover {
+            .remove_tag {
+              opacity: 1;
+
+              padding: 2px 10px;
+              border-radius: 25px;
+              background-color: #e6e6e6;
+              font-size: 0.8em;
+              margin-left: -15px;
+            }
+          }
+        }
       }
     }
 

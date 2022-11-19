@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 export const CardPreviewStyled = styled.div`
-  background-color: #fff;
+  background-color: #202024;
   border-radius: 5px;
   padding: 20px 20px;
   border: solid 1px #e6e6e6;
   height: 310px;
-  width: 20%;
+  width: 300px;
 
   pre {
     white-space: pre-wrap; /* Since CSS 2.1 */
@@ -17,7 +17,8 @@ export const CardPreviewStyled = styled.div`
     font-family: "Roboto";
   }
 
-  .header {
+  .header_card {
+    background-color: #202024;
     height: 10%;
     .title {
       font-size: 1.3em;
@@ -47,6 +48,7 @@ export const CardPreviewStyled = styled.div`
     flex-wrap: wrap;
     gap: 10px;
     bottom: 0;
+    color: #000;
   }
 `;
 
