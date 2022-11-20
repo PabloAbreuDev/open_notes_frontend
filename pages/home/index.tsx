@@ -21,8 +21,7 @@ import { HomeStyled } from "./styled";
 import useWindowDimensions from "../../custom_hooks/useWindowDimensions";
 import { ConfigContext } from "../../context/ConfigContext";
 import { EditMenu } from "../../components/edit_menu";
-import { DebounceInput } from 'react-debounce-input'
-
+import { DebounceInput } from "react-debounce-input";
 
 export default function Home() {
     const { user, signOut } = useContext(AuthContext);
@@ -35,10 +34,11 @@ export default function Home() {
         createNote,
         tags,
         currentTag,
-        selectTag, findNotesByText
-
+        selectTag,
+        findNotesByText,
     } = useContext(NoteContext);
-    const { loadNoteBooks, currentNotebook, selectNoteBook } = useContext(NoteBookContext);
+    const { loadNoteBooks, currentNotebook, selectNoteBook } =
+        useContext(NoteBookContext);
     const { toggleMenuOpen, menuOpen } = useContext(ConfigContext);
     const [show, setShow] = useState(false);
     const { width, height } = useWindowDimensions();
@@ -49,12 +49,6 @@ export default function Home() {
 
     const [noteBookEditOpen, setNoteBookEditOpen] = useState(false);
     const [tagEditOpen, setTagEditOpen] = useState(false);
-
-
-
-
-
-
 
     useEffect(() => {
         function loadPageDate() {
@@ -88,7 +82,6 @@ export default function Home() {
                 onClose={() => setTagEditOpen(!tagEditOpen)}
             />
             <div className="side_bar">
-
                 <div className="item-list" onClick={() => setNoteBookEditOpen(true)}>
                     <BsPencil className="icon" />
                     <a>Edit notebooks</a>
@@ -97,30 +90,44 @@ export default function Home() {
                     <BsPencil className="icon" />
                     <a>Edit tags</a>
                 </div>
-                <div onClick={() => { loadNotes("", ""), selectNoteBook(null), selectTag(null) }} className="item-list">
+                <div
+                    onClick={() => {
+                        loadNotes("", ""), selectNoteBook(null), selectTag(null);
+                    }}
+                    className="item-list"
+                >
                     <BsFillLightbulbFill className="icon" />
                     <a>All Notes</a>
                 </div>
                 {noteBooks.map((item) => (
-                    <div onClick={() => {
-                        loadNotes(currentTag?._id ?? "", item._id)
-                        selectNoteBook(item)
-                    }}
-
-                        style={{ backgroundColor: item._id === currentNotebook?._id ? "rebeccapurple" : "initial" }}
-                        className="item-list">
+                    <div
+                        onClick={() => {
+                            loadNotes(currentTag?._id ?? "", item._id);
+                            selectNoteBook(item);
+                        }}
+                        style={{
+                            backgroundColor:
+                                item._id === currentNotebook?._id ? "rebeccapurple" : "initial",
+                        }}
+                        className="item-list"
+                    >
                         <BsFillJournalBookmarkFill className="icon" />
                         <a>{item.title}</a>
                     </div>
                 ))}
 
                 {tags.map((item) => (
-                    <div onClick={() => {
-                        loadNotes(item._id, currentNotebook?._id ?? "")
-                        selectTag(item)
-                    }}
-                        style={{ backgroundColor: item._id === currentTag?._id ? "rebeccapurple" : "initial" }}
-                        className="item-list">
+                    <div
+                        onClick={() => {
+                            loadNotes(item._id, currentNotebook?._id ?? "");
+                            selectTag(item);
+                        }}
+                        style={{
+                            backgroundColor:
+                                item._id === currentTag?._id ? "rebeccapurple" : "initial",
+                        }}
+                        className="item-list"
+                    >
                         <BsFillTagFill className="icon" />
                         <a>{item.name}</a>
                     </div>
@@ -134,7 +141,12 @@ export default function Home() {
                         onClick={() => setSideBarOpen(!sideBarOpen)}
                     />
                     <div className="search_bar">
-                        <DebounceInput type="text" placeholder="Search" debounceTimeout={1000} onChange={(e) => findNotesByText(e.target.value)} />
+                        <DebounceInput
+                            type="text"
+                            placeholder="Search"
+                            debounceTimeout={1000}
+                            onChange={(e) => findNotesByText(e.target.value)}
+                        />
                     </div>
                     <div className="options">
                         <BsFillGearFill className="icon" />
@@ -201,4 +213,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 function useMemo(arg0: () => any, arg1: never[]) {
     throw new Error("Function not implemented.");
 }
-

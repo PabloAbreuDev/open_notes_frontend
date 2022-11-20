@@ -23,6 +23,7 @@ type NoteContextType = {
     editTag: (name: string, tagId: string) => Promise<void>;
     findNotesByText: (text: string) => Promise<void>;
     selectTag: (tag: ITagInfo | null) => Promise<void>;
+    changeColor: (noteId: string, color: string) => Promise<void>;
 };
 
 export const NoteContext = createContext({} as NoteContextType);
@@ -31,7 +32,7 @@ export function NoteProvider({ children }: any) {
     const [notes, setNotes] = useState<ICardInfo[]>([]);
     const [tags, setTags] = useState<ITagInfo[]>([]);
     const [currentNote, setCurrentNote] = useState<ICardInfo | null>(null);
-    const [currentTag, setCurrentTag] = useState<ITagInfo | null>(null)
+    const [currentTag, setCurrentTag] = useState<ITagInfo | null>(null);
 
     async function loadCurrentNote(noteDate: ICardInfo) {
         setCurrentNote(noteDate);
@@ -219,6 +220,29 @@ export function NoteProvider({ children }: any) {
         return;
     }
 
+    async function changeColor(noteId: string, color: string) {
+        try {
+            await api.put("/notes/change_color", {
+                noteId,
+                color,
+            });
+
+            const newState = notes.map((obj) => {
+                if (obj._id === noteId) {
+                    return { ...obj, color: color };
+                }
+                return obj;
+            });
+
+            setNotes(newState);
+
+        } catch (err) {
+            console.log(err)
+        }
+
+        return;
+    }
+
     return (
         <NoteContext.Provider
             value={{
@@ -240,7 +264,7 @@ export function NoteProvider({ children }: any) {
                 editTag,
                 findNotesByText,
                 selectTag,
-
+                changeColor,
             }}
         >
             {children}

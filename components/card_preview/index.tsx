@@ -8,7 +8,7 @@ import { CardPreviewStyled, TagStyled } from "./styled";
 
 function CardPreview({ card, tags }: { card: ICardInfo, tags: ITagInfo[] }) {
 
-    return <CardPreviewStyled>
+    return <CardPreviewStyled color={card.color}>
         <div className="header_card">
             <div className="title"><pre>{abbreviation(card.title, 20)}</pre></div>
         </div>

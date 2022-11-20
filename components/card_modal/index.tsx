@@ -1,6 +1,6 @@
 import { ITagInfo } from "../../interface/card";
 import { Tag } from "../card_preview";
-import { CardModalStyled } from "./styled";
+import { CardModalStyled, ColorsModalMenuStyled } from "./styled";
 import {
     BsFillTagFill,
     BsFillTrash2Fill,
@@ -12,6 +12,7 @@ import { NoteContext } from "../../context/NoteContext";
 import SubMenu, { SubMenuOptions } from "../sub_menu";
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
+import { CirclePicker } from "react-color";
 
 type CardProps = {
     show: boolean;
@@ -29,6 +30,7 @@ function CardModal({ props }: { props: CardProps }) {
         addTagToNote,
         removeTagFromNote,
         setCurrentNote,
+        changeColor
     } = useContext(NoteContext);
 
     const [tagActions, setTagActions] = useState<SubMenuOptions[]>([]);
@@ -41,7 +43,9 @@ function CardModal({ props }: { props: CardProps }) {
     const titleRef = useRef<HTMLTextAreaElement>(null);
     const contentRef = useRef<HTMLTextAreaElement>(null);
 
-    const [markdownOn, setMarkdownOn] = useState<boolean>(false)
+    const [markdownOn, setMarkdownOn] = useState<boolean>(false);
+
+    const [colorPalletOpen, setColorPalletOpen] = useState<boolean>(false)
 
     const resizeTextArea = () => {
         if (titleRef.current !== null) {
@@ -91,7 +95,7 @@ function CardModal({ props }: { props: CardProps }) {
     }
 
     async function toggleMarkdown() {
-        setMarkdownOn(!markdownOn)
+        setMarkdownOn(!markdownOn);
     }
 
     const options = [
@@ -100,7 +104,7 @@ function CardModal({ props }: { props: CardProps }) {
     ];
 
     return (
-        <CardModalStyled onMouseDown={onCloseModal}>
+        <CardModalStyled onMouseDown={onCloseModal} color={currentNote?.color}>
             <div
                 className="card_modal_content"
                 onMouseDown={(e) => {
@@ -125,31 +129,28 @@ function CardModal({ props }: { props: CardProps }) {
                 </div>
                 <div className="card_modal_body">
                     <div className="card_modal_body_text">
-                        {
-                            markdownOn ?
-                                <div className="markdown">
-                                    <ReactMarkdown children={currentNote?.content || ""} remarkPlugins={[remarkGfm]} />
-                                </div>
-                                :
-                                <textarea
-                                    ref={contentRef}
-                                    value={currentNote?.content}
-                                    rows={1}
-                                    onChange={(e) =>
-                                        setCurrentNote({
-                                            _id: currentNote?._id || "",
-                                            tags: currentNote?.tags || [],
-                                            content: e.target.value,
-                                            title: currentNote?.title || "",
-                                        })
-                                    }
-                                ></textarea>
-                        }
-
-
-
-
-
+                        {markdownOn ? (
+                            <div className="markdown">
+                                <ReactMarkdown
+                                    children={currentNote?.content || ""}
+                                    remarkPlugins={[remarkGfm]}
+                                />
+                            </div>
+                        ) : (
+                            <textarea
+                                ref={contentRef}
+                                value={currentNote?.content}
+                                rows={1}
+                                onChange={(e) =>
+                                    setCurrentNote({
+                                        _id: currentNote?._id || "",
+                                        tags: currentNote?.tags || [],
+                                        content: e.target.value,
+                                        title: currentNote?.title || "",
+                                    })
+                                }
+                            ></textarea>
+                        )}
                     </div>
 
                     <div className="tags" contentEditable={false}>
@@ -160,7 +161,7 @@ function CardModal({ props }: { props: CardProps }) {
                                     className="remove_tag"
                                     onClick={() => removeTagFromNote(currentNote._id, item._id)}
                                 >
-                                    x
+                                    ✖
                                 </div>
                             </div>
                         ))}
@@ -171,7 +172,12 @@ function CardModal({ props }: { props: CardProps }) {
                         <BsFillMarkdownFill onClick={() => toggleMarkdown()} />
                     </div>
                     <div className="icon">
-                        <BsPaletteFill />
+                        <BsPaletteFill onClick={() => setColorPalletOpen(!colorPalletOpen)} />
+                        {
+
+                            colorPalletOpen ? <ColorsModalMenu onClose={() => setColorPalletOpen(false)} noteId={currentNote?._id || ""} /> : null
+
+                        }
                     </div>
 
                     <div className="icon" onMouseDown={(e) => e.stopPropagation()}>
@@ -197,6 +203,21 @@ function CardModal({ props }: { props: CardProps }) {
                 </div>
             </div>
         </CardModalStyled>
+    );
+}
+
+function ColorsModalMenu({ noteId, onClose }: { noteId: string, onClose: () => void }) {
+    const {
+        changeColor
+    } = useContext(NoteContext);
+    const handleChange = (color: any) => {
+        changeColor(noteId, color.hex)
+        onClose()
+    }
+    return (
+        <ColorsModalMenuStyled>
+            <CirclePicker onChange={handleChange} colors={["#5FAB44", "#F1961D", "#E83023", "#3C5BA6", "#A21D46"]} />
+        </ColorsModalMenuStyled>
     );
 }
 

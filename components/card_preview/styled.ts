@@ -1,12 +1,17 @@
 import styled from "styled-components";
 
-export const CardPreviewStyled = styled.div`
-  background-color: #202024;
+type TypeCardPreviewStyled = {
+  color?: string;
+};
+
+export const CardPreviewStyled = styled.div<TypeCardPreviewStyled>`
+  background-color: ${(props) =>
+    props.color === "nocolor" ? "#202024" : props.color};
   border-radius: 5px;
   padding: 20px 20px;
-  border: solid 1px #e6e6e6;
   height: 310px;
   width: 300px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   pre {
     white-space: pre-wrap; /* Since CSS 2.1 */
@@ -18,7 +23,6 @@ export const CardPreviewStyled = styled.div`
   }
 
   .header_card {
-    background-color: #202024;
     height: 10%;
     .title {
       font-size: 1.3em;

@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-export const CardModalStyled = styled.div`
+type TypeCardModalStyled = {
+  color?: string;
+};
+export const CardModalStyled = styled.div<TypeCardModalStyled>`
   position: fixed;
   left: 0;
   top: 0;
@@ -174,4 +177,14 @@ export const CardModalStyled = styled.div`
       }
     }
   }
+`;
+
+export const ColorsModalMenuStyled = styled.div`
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 15px;
+  border-radius: 8px;
+  position: absolute;
+  margin-top: 120px;
+  margin-right: 30px;
 `;

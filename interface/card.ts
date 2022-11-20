@@ -3,6 +3,7 @@ export interface ICardInfo {
   title: string;
   content: string;
   tags: ITagInfo[];
+  color?: string;
 }
 
 export interface ITagInfo {

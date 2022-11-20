@@ -13,6 +13,8 @@ export const SubMenuStyled = styled.div`
 
     border: 1px solid grey;
     width: 150px;
+    max-height: 130px;
+    overflow-y: auto;
   }
   li {
     margin: 0;
