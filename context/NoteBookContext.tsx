@@ -9,7 +9,7 @@ type NoteBookContextType = {
     deleteNoteBook: (noteBookId: string) => Promise<void>;
     editNotebook: (title: string, notebookId: string) => Promise<void>;
     currentNotebook: INotebook | null;
-    selectNoteBook: (noteBookId: INotebook) => Promise<void>;
+    selectNoteBook: (noteBookId: INotebook | null) => Promise<void>;
 };
 
 export const NoteBookContext = createContext({} as NoteBookContextType);
@@ -63,7 +63,7 @@ export function NoteBookProvider({ children }: any) {
         return;
     }
 
-    async function selectNoteBook(notebook: INotebook) {
+    async function selectNoteBook(notebook: INotebook | null) {
         setCurrentNotebook(notebook);
         return;
     }
@@ -77,7 +77,7 @@ export function NoteBookProvider({ children }: any) {
                 deleteNoteBook,
                 editNotebook,
                 selectNoteBook,
-                currentNotebook,
+                currentNotebook
             }}
         >
             {children}

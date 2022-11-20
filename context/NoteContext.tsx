@@ -6,6 +6,7 @@ type NoteContextType = {
     currentNote: ICardInfo | null;
     notes: ICardInfo[];
     tags: ITagInfo[];
+    currentTag: ITagInfo | null;
     loadCurrentNote: (noteDate: ICardInfo) => void;
     loadNotes: (tagId?: string, noteBookId?: string) => void;
     changeNote: (noteId: string, title: string, content: string) => void;
@@ -21,6 +22,7 @@ type NoteContextType = {
     setCurrentNote: (item: ICardInfo) => void;
     editTag: (name: string, tagId: string) => Promise<void>;
     findNotesByText: (text: string) => Promise<void>;
+    selectTag: (tag: ITagInfo | null) => Promise<void>;
 };
 
 export const NoteContext = createContext({} as NoteContextType);
@@ -29,6 +31,7 @@ export function NoteProvider({ children }: any) {
     const [notes, setNotes] = useState<ICardInfo[]>([]);
     const [tags, setTags] = useState<ITagInfo[]>([]);
     const [currentNote, setCurrentNote] = useState<ICardInfo | null>(null);
+    const [currentTag, setCurrentTag] = useState<ITagInfo | null>(null)
 
     async function loadCurrentNote(noteDate: ICardInfo) {
         setCurrentNote(noteDate);
@@ -211,12 +214,18 @@ export function NoteProvider({ children }: any) {
         return;
     }
 
+    async function selectTag(tag: ITagInfo | null) {
+        setCurrentTag(tag);
+        return;
+    }
+
     return (
         <NoteContext.Provider
             value={{
                 notes,
                 tags,
                 currentNote,
+                currentTag,
                 loadCurrentNote,
                 loadNotes,
                 changeNote,
@@ -230,6 +239,8 @@ export function NoteProvider({ children }: any) {
                 setCurrentNote,
                 editTag,
                 findNotesByText,
+                selectTag,
+
             }}
         >
             {children}
