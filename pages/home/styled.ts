@@ -6,7 +6,7 @@ type TypeHomeStyled = {
 };
 
 export const HomeStyled = styled.div<TypeHomeStyled>`
-  background-color: #121214;
+  background-color: ${(props) => props.theme.secondaryColor};
   color: #e1e1e6;
   overflow-x: hidden;
 
@@ -17,7 +17,7 @@ export const HomeStyled = styled.div<TypeHomeStyled>`
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #202024;
+    background-color: ${(props) => props.theme.tertiaryColor};
     border-right: 1px black solid;
     overflow-x: hidden;
     transition: 0.5s;
@@ -74,7 +74,7 @@ export const HomeStyled = styled.div<TypeHomeStyled>`
 
     .header {
       width: 100%;
-      background-color: #202024;
+      background-color: ${(props) => props.theme.primaryColor};
       height: 60px;
       display: flex;
       justify-content: space-between;
@@ -92,10 +92,10 @@ export const HomeStyled = styled.div<TypeHomeStyled>`
       justify-content: center;
       input {
         outline: none;
-        background-color: #121214;
+        background-color: ${(props) => props.theme.secondaryColor};
         border: none;
         padding: 13px;
-        color: #fff;
+        color: ${(props) => props.theme.text};
         border-radius: 8px;
         width: 50%;
         @media only screen and (max-width: 600px) {
@@ -112,6 +112,7 @@ export const HomeStyled = styled.div<TypeHomeStyled>`
       justify-content: center;
       @media only screen and (max-width: 600px) {
         gap: 10px;
+        display: ${(props) => (props.sideBarOpen ? "none" : "flex")};
       }
       .logout_area {
         .logout_dropdown {
@@ -144,20 +145,22 @@ export const HomeStyled = styled.div<TypeHomeStyled>`
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 40px 60px;
+        padding: 40px 0;
         flex: 4;
 
         .new_note {
         }
 
-        .my_cards {
-          margin-top: 40px;
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-wrap: wrap;
-          gap: 10px;
+        .cards_area {
+          .my_cards {
+            margin-top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+          }
         }
       }
     }

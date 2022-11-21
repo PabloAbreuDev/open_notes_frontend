@@ -4,6 +4,7 @@ import { AuthProvider } from "../context/AuthContext";
 import { NoteProvider } from "../context/NoteContext";
 import { NoteBookProvider } from "../context/NoteBookContext";
 import { ConfigProvider } from "../context/ConfigContext";
+import Theme from "../components/theme_provider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,13 +12,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NoteBookProvider>
         <NoteProvider>
           <AuthProvider>
-            <Component {...pageProps} />
+            <Theme>
+              <Component {...pageProps} />
+            </Theme>
           </AuthProvider>
         </NoteProvider>
       </NoteBookProvider>
     </ConfigProvider>
-
-
   );
 }
 

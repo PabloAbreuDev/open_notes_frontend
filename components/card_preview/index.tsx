@@ -17,7 +17,7 @@ function CardPreview({ card, tags }: { card: ICardInfo, tags: ITagInfo[] }) {
         </div>
         <div className="footer">
             {tags.map((item, index) => (index <= 1 ? Tag(item) : null))}
-            {tags.length > 2 ? <Tag _id="a" name={`${tags.length}+`} /> : null}
+            {tags.length > 2 ? <Tag _id="a" name={`+${tags.length - 2}`} /> : null}
         </div>
     </CardPreviewStyled>;
 }

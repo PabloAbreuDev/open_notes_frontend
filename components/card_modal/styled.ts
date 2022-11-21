@@ -17,10 +17,14 @@ export const CardModalStyled = styled.div<TypeCardModalStyled>`
   .card_modal_content {
     width: 40vw;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow-x: auto;
-
     color: #000;
+
+    @media only screen and (max-width: 600px) {
+      width: 100vw;
+      margin-top: 30px;
+    }
 
     textarea {
       width: 100%;
@@ -49,6 +53,9 @@ export const CardModalStyled = styled.div<TypeCardModalStyled>`
       overflow-x: hidden;
       overflow-y: auto;
       padding: 0 10px 0 10px;
+      @media only screen and (max-width: 600px) {
+        max-height: 70vh;
+      }
 
       white-space: pre-wrap;
       word-wrap: break-word;
@@ -82,6 +89,7 @@ export const CardModalStyled = styled.div<TypeCardModalStyled>`
       }
       .tags {
         display: flex;
+        flex-wrap: wrap;
         gap: 15px;
         justify-content: flex-end;
         user-select: none;

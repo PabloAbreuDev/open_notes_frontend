@@ -1,3 +1,4 @@
+import { BsPlusLg } from "react-icons/bs"
 import { NewNoteBoxStyled } from "./styled"
 
 function NewNoteBox() {
@@ -5,9 +6,7 @@ function NewNoteBox() {
 
 
     return <NewNoteBoxStyled>
-        <div>
-            Create a note...
-        </div>
+        <BsPlusLg />
 
     </NewNoteBoxStyled>
 }

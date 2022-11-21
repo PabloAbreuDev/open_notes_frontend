@@ -16,6 +16,7 @@ import {
     BsList,
     BsFillLightbulbFill,
     BsPencil,
+    BsSunFill,
 } from "react-icons/bs";
 import { HomeStyled } from "./styled";
 import useWindowDimensions from "../../custom_hooks/useWindowDimensions";
@@ -39,7 +40,7 @@ export default function Home() {
     } = useContext(NoteContext);
     const { loadNoteBooks, currentNotebook, selectNoteBook } =
         useContext(NoteBookContext);
-    const { toggleMenuOpen, menuOpen } = useContext(ConfigContext);
+    const { toggleMenuOpen, menuOpen, toggleTheme, theme } = useContext(ConfigContext);
     const [show, setShow] = useState(false);
     const { width, height } = useWindowDimensions();
     const [sideBarOpen, setSideBarOpen] = useState<boolean>(true);
@@ -150,7 +151,11 @@ export default function Home() {
                     </div>
                     <div className="options">
                         <BsFillGearFill className="icon" />
-                        <BsMoonFill className="icon" />
+                        <div onClick={() => toggleTheme()}>
+                            {theme === "light" ? <BsMoonFill className="icon" /> : <BsSunFill className="icon" />}
+
+                        </div>
+
                         <div className="logout_area">
                             <BsFillPersonFill
                                 className="icon"
@@ -176,27 +181,31 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div className="my_cards">
-                            {notes.map((item) => (
-                                <div
-                                    onClick={() => {
-                                        loadCurrentNote(item);
-                                        setShow(true);
-                                    }}
-                                >
-                                    <CardPreview card={item} tags={item.tags} />
-                                </div>
-                            ))}
+                        <div className="cards_area">
+                            <div className="my_cards">
+
+                                {notes.map((item) => (
+                                    <div
+                                        onClick={() => {
+                                            loadCurrentNote(item);
+                                            setShow(true);
+                                        }}
+                                    >
+                                        <CardPreview card={item} tags={item.tags} />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
-        </HomeStyled>
+        </HomeStyled >
     );
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    // const apiClient = getApiClient(ctx) assim uso com o context
     const { "@opennotes:token": token } = parseCookies(ctx);
     if (!token) {
         return {

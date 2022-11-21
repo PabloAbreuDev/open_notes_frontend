@@ -6,6 +6,7 @@ import {
     BsFillTrash2Fill,
     BsFillMarkdownFill,
     BsPaletteFill,
+    BsPencilFill,
 } from "react-icons/bs";
 import { useContext, useEffect, useRef, useState } from "react";
 import { NoteContext } from "../../context/NoteContext";
@@ -169,7 +170,8 @@ function CardModal({ props }: { props: CardProps }) {
                 </div>
                 <div className="card_modal_footer">
                     <div className="icon">
-                        <BsFillMarkdownFill onClick={() => toggleMarkdown()} />
+                        {markdownOn ? <BsPencilFill onClick={() => setMarkdownOn(false)} /> : <BsFillMarkdownFill onClick={() => setMarkdownOn(true)} />}
+
                     </div>
                     <div className="icon">
                         <BsPaletteFill onClick={() => setColorPalletOpen(!colorPalletOpen)} />
@@ -216,7 +218,7 @@ function ColorsModalMenu({ noteId, onClose }: { noteId: string, onClose: () => v
     }
     return (
         <ColorsModalMenuStyled>
-            <CirclePicker onChange={handleChange} colors={["#5FAB44", "#F1961D", "#E83023", "#3C5BA6", "#A21D46"]} />
+            <CirclePicker onChange={handleChange} colors={["#5FAB44", "#F1961D", "#E83023", "#3C5BA6", "#A21D46", "#202024"]} />
         </ColorsModalMenuStyled>
     );
 }

@@ -1,12 +1,9 @@
-import { api } from "../../services/api";
 import Swal from "sweetalert2";
 import * as yup from "yup";
-import { useFormik, validateYupSchema } from "formik";
+import { useFormik } from "formik";
 import { useContext, useState } from "react";
 import { SignInBackGround, SingInPanel } from "./styled";
 import Link from "next/link";
-import jwt_decode from "jwt-decode";
-import background from '../../public/background.jpg'
 import { useRouter } from "next/router";
 import { AuthContext } from "../../context/AuthContext";
 import { GetServerSideProps } from "next";
